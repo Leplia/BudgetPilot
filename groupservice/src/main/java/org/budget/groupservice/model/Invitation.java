@@ -1,20 +1,22 @@
 package org.budget.groupservice.model;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.budget.commonaudit.audit.Auditable;
 
 import java.util.UUID;
 
 @Entity
-@Table(name = "group_members")
+@Table(name="invitations")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class GroupMember extends Auditable {
+public class Invitation extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -23,12 +25,20 @@ public class GroupMember extends Auditable {
     @JoinColumn(name = "group_id", nullable = false)
     private FamilyGroup familyGroup;
 
-    @Column(name="user_id")
-    private UUID userId;
+    @Column(name = "invited_email", nullable = false)
+    private String invitedEmail;
 
     @Enumerated(EnumType.STRING)
-    private GroupRole role;
+    @Column(name = "invited_role", nullable = false)
+    private GroupRole invitedRole;
+
+    @Column(name = "is_used", nullable = false)
+    private Boolean isUsed;
 
     @Enumerated(EnumType.STRING)
-    private MemberStatus status;
+    @Column(nullable = false)
+    private InvitationStatus status;
+
+    @Column(name = "accepted_by_user_id")
+    private UUID acceptedByUserId;
 }
